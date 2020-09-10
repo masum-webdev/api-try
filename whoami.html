@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Who Am I?</title>
+  <link rel="stylesheet" href="whoami-style.css">
+</head>
+<body>
+  <table border="1">
+    <caption>Your Information</caption>
+    <tr>
+      <td colspan="2" align="center">
+        <img id="user-profile"  alt="profile">
+      </td>
+    </tr>
+    <tr>
+      <th>Name</th>
+      <td id="user-name"></td>
+    </tr>
+    <tr>
+      <th>Email</th>
+      <td id="user-email"></td>
+    </tr>
+    <tr>
+      <th>Address</th>
+      <td >
+        <i id="user-address"></i>
+      </td>
+    </tr>
+  </table>
+  
+  <script>
+    setInterval(loadData, 5000);
+ 
+  function loadData(){
+    fetch('https://randomuser.me/api/')
+    .then(res=>res.json())
+    .then(data=>{
+      const fullInfo=data.results[0];
+
+      document.getElementById('user-profile').src=fullInfo.picture.large;
+
+      const name=fullInfo.name;
+      const fullName=`${name.title} ${name.first} ${name.last}`;
+      document.getElementById('user-name').innerText=fullName;
+
+      document.getElementById('user-email').innerText=fullInfo.email;
+
+      const streetNumber=fullInfo.location.street.number;
+      const streetName=fullInfo.location.street.name;
+      const city=fullInfo.location.city;
+      const postcode=fullInfo.location.postcode;
+      const state=fullInfo.location.state;
+      const country=fullInfo.location.country;
+
+      const address=`Street: ${streetNumber} ${streetName}\nCity:${city}\nPostcode:${postcode}\nState:${state}\nCountry:${country}`;
+      document.getElementById('user-address').innerText=address;
+      
+    })
+  }
+  </script>
+</body>
+</html>
